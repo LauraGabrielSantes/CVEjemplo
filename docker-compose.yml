@@ -1,0 +1,19 @@
+services:
+  latex:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/documents
+      - ./build:/documents/build
+    env_file:
+      - ./.env
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    command:
+      [
+        "/bin/bash",
+        "-c",
+        "latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build -pvc -view=none ${MAIN_TEX}",
+      ]
